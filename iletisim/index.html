@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Petek Plastik</title>
+    <!-- styles -->
+    <link rel="stylesheet" type="text/css" href="/styles.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">    
+    
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="bar">
+        <div class="pt-logo"><a href="/"><img src="/images/logo.svg" alt="Logo"></a></div>
+      </div>
+      <div class="bar">
+        <nav class="pt-main-nav-wrapper">
+          <ul class="pt-main-nav">
+            <li><a href="/urunler">ÜRÜNLER</a></li>
+            <li><a href="/uretim">ÜRETİM</a></li>
+            <li><a href="/iletisim">İLETİŞİM</a></li>
+          </ul> <!-- .pt-main-nav -->
+        </nav> <!-- .pt-main-nav-wrapper -->
+        <span class="pt-nav-trigger">Menu<span></span></span>
+      </div>
+    </div>
+  </header>
+  
+  <main class="pt-main-content">
+  <div id="map"></div>  
+    
+    <section class="footer_spacer"></section>
+
+    <footer class="footer-small dark">
+      <nav>
+        <div class="container">
+          <div class="bar">
+            <img src="/images/petektwodi-w.svg" alt="">
+          </div>
+          <div class="bar">
+            <h5>HOME</h5>
+            <ul>
+              <li><a href="/kalite">Kalite Sertifikaları</a></li>
+              <li><a href="/kullanim">Kullanim Şartları</a></li>
+              <li><a href="/sss">Sıkça Sorulanlar</a></li>
+              <li><a href="/referans">Referanslar</a></li>
+              <li><a href="/ik">İnsan Kaynakları</a></li>
+            </ul>
+          </div>
+          <div class="bar">
+            <h5>ÜRÜNLER</h5>
+            <ul>
+              <li><a href="/urunler/kozmetik">Kozmetik Grubu</a></li>
+              <li><a href="/urunler/gida">Gıda Grubu</a></li>
+              <li><a href="/urunler/kimyasal">Kimyasal Ürün Ambalajları</a></li>
+              <li><a href="/urunler/madeni-yag">Madeni Yağ Ambalajları</a></li>
+              <li><a href="/urunler/uretim">Üretim</a></li>
+            </ul>
+          </div>
+          <div class="bar">
+            <h5>SOSYAL</h5>
+            <ul>
+              <li><a class="sc-fb" href="https://www.facebook.com/petekpls" target="_blank">Facebook</a></li>
+              <li><a class="sc-tw" href="https://www.twitter.com/petekpls" target="_blank">Twitter</a></li>
+              <li><a class="sc-in" href="https://www.instagram.com/petekpls" target="_blank">İnstagram</a></li>
+            </ul>
+          </div>
+          <div class="bar-last">
+            <h5>İLETİŞİM</h5>
+            <p>Adres: Konya 3. Organize Sanayi<br> Bölgesi İhsandede Caddesi No: 16 <br>Selçuklu / Konya / Türkiye<br>
+                <br>Telefon: +90 332 239 06 42 (pbx)
+                <br>Faks: +90 332 239 07 42
+                <br>E-Mail: bilgi@petekplastik.com</p>
+          </div>
+        </div>
+      </nav>
+      <div class="rotate"><strong>Layer</strong> Branding</div>
+    </footer>
+  </main>
+ 
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js'></script>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js'></script>
+  
+  <script src='http://maps.google.com/maps/api/js'></script>
+  <script src='http://github.com/michaelvillar/dynamics.js/releases/download/0.0.8/dynamics.min.js'></script>
+
+  <script src="/js/jquery.fluidbox.js"></script>
+  <script src="/js/closest.js"></script>
+  <script src="/js/blazy.js"></script>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/header.js"></script>
+  <script>
+    CustomMarker.prototype = new google.maps.OverlayView();
+
+function CustomMarker(opts) {
+    this.setValues(opts);
+}
+
+CustomMarker.prototype.draw = function() {
+    var self = this;
+    var div = this.div;
+    if (!div) {
+        div = this.div = $('' +
+            '<div>' +
+            '<div class="shadow"></div>' +
+            '<div class="pulse"></div>' +
+            '<div class="pin-wrap">' +
+            '<div class="pin"></div>' +
+            '</div>' +
+            '</div>' +
+            '')[0];
+        this.pinWrap = this.div.getElementsByClassName('pin-wrap');
+        this.pin = this.div.getElementsByClassName('pin');
+        this.pinShadow = this.div.getElementsByClassName('shadow');
+        div.style.position = 'absolute';
+        div.style.cursor = 'pointer';
+        var panes = this.getPanes();
+        panes.overlayImage.appendChild(div);
+        google.maps.event.addDomListener(div, "click", function(event) {
+            google.maps.event.trigger(self, "click", event);
+        });
+    }
+    var point = this.getProjection().fromLatLngToDivPixel(this.position);
+    if (point) {
+        div.style.left = point.x + 'px';
+        div.style.top = point.y + 'px';
+    }
+};
+
+CustomMarker.prototype.animateDrop = function() {
+    dynamics.stop(this.pinWrap);
+    dynamics.css(this.pinWrap, {
+        'transform': 'scaleY(1) translateY(-'+$('#map').outerHeight()+'px)',
+        'opacity': '1',
+    });
+    dynamics.animate(this.pinWrap, {
+        translateY: 0,
+        scaleY: 1.0,
+    }, {
+        type: dynamics.gravity,
+        duration: 1800,
+    });
+
+    dynamics.stop(this.pin);
+    dynamics.css(this.pin, {
+        'transform': 'none',
+    });
+    dynamics.animate(this.pin, {
+        scaleY: 0.8
+    }, {
+        type: dynamics.bounce,
+        duration: 1800,
+        bounciness: 600,
+    })
+
+    dynamics.stop(this.pinShadow);
+    dynamics.css(this.pinShadow, {
+        'transform': 'scale(0,0)',
+    });
+    dynamics.animate(this.pinShadow, {
+        scale: 1,
+    }, {
+        type: dynamics.gravity,
+        duration: 1800,
+    });
+}
+
+CustomMarker.prototype.animateBounce = function() {
+    dynamics.stop(this.pinWrap);
+    dynamics.css(this.pinWrap, {
+        'transform': 'none',
+    });
+    dynamics.animate(this.pinWrap, {
+        translateY: -30
+    }, {
+        type: dynamics.forceWithGravity,
+        bounciness: 0,
+        duration: 500,
+        delay: 150,
+    });
+
+    dynamics.stop(this.pin);
+    dynamics.css(this.pin, {
+        'transform': 'none',
+    });
+    dynamics.animate(this.pin, {
+        scaleY: 0.8
+    }, {
+        type: dynamics.bounce,
+        duration: 800,
+        bounciness: 0,
+    });
+    dynamics.animate(this.pin, {
+        scaleY: 0.8
+    }, {
+        type: dynamics.bounce,
+        duration: 800,
+        bounciness: 600,
+        delay: 650,
+    });
+
+    dynamics.stop(this.pinShadow);
+    dynamics.css(this.pinShadow, {
+        'transform': 'none',
+    });
+    dynamics.animate(this.pinShadow, {
+        scale: 0.6,
+    }, {
+        type: dynamics.forceWithGravity,
+        bounciness: 0,
+        duration: 500,
+        delay: 150,
+    });
+}
+
+CustomMarker.prototype.animateWobble = function() {
+    dynamics.stop(this.pinWrap);
+    dynamics.css(this.pinWrap, {
+        'transform': 'none',
+    });
+    dynamics.animate(this.pinWrap, {
+        rotateZ: -45,
+    }, {
+        type: dynamics.bounce,
+        duration: 1800,
+    });
+
+    dynamics.stop(this.pin);
+    dynamics.css(this.pin, {
+        'transform': 'none',
+    });
+    dynamics.animate(this.pin, {
+        scaleX: 0.8
+    }, {
+        type: dynamics.bounce,
+        duration: 800,
+        bounciness: 1800,
+    });
+}
+
+$(function() {
+    var pos = new google.maps.LatLng(37.984395, 32.611635);
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: pos,
+        disableDefaultUI: true,
+        scrollwheel: false
+    });
+
+    var marker = new CustomMarker({
+        position: pos,
+        map: map,
+    });
+
+    google.maps.event.addListener(marker, 'click', function(e) {
+        marker.animateWobble();
+    });
+
+    $('#drop').on('click', function(e) {
+        marker.animateDrop();
+    });
+
+    $('#wobble').on('click', function(e) {
+        marker.animateWobble();
+    });
+
+    $('#bounce').on('click', function(e) {
+        marker.animateBounce();
+    })
+});
+  </script>
+</body>
+</html>
