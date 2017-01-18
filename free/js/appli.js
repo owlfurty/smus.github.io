@@ -35,7 +35,7 @@ $(document).ready(function(){
 	app_name = "Free Yerli Arama Motoru"; //your search engine name
 	loc = "tr"; //your language
 	pubId = ""; //your AdSense Custom Search Ads pubId
-	domain = "http://smus.nl/free"; //your domain name
+	domain = "smus.nl/free"; //your domain name
 	
 	query_prediction = "";
 	query = "";
